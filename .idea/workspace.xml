@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="75c667ed-7e4f-4910-afab-def004677e68" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/constants/DateTimeConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/constants/SecurityConstant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/enumeration/BoolEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/enumeration/LoginType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/enumeration/ResponseState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/enumeration/TbState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/exception/BizException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/exception/BizIllegalArgumentException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/exception/JwtExpiredException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/exception/JwtInvalidException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/exception/LoginException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/exception/LoginIllegalArgumentException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/exception/RefreshTokenExpiredException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/handler/BaseExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/model/AuthAdmin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/model/AuthMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/model/AuthRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/model/AuthenticationModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/model/common/ResponseData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/model/common/Tree.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/serializers/BaseDateSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/serializers/DateDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/serializers/DateSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/serializers/LocalDateDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/serializers/LocalDateSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/serializers/LocalDateTimeDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/serializers/LocalDateTimeSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/serializers/LocalTimeDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/serializers/LocalTimeSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/strategy/Strategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/strategy/StrategyFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/utils/JsonUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/utils/TreeUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/validation/AddGroup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/validation/DeleteGroup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/validation/EnumValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/validation/QueryGroup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-core/src/main/java/com/zigaai/validation/UpdateGroup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/converter/SystemUserConvertor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/enumeration/LoginType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/filter/JwtFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/filter/LoginAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/handler/DefaultAccessDeniedHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/handler/DefaultAuthenticationEntryPoint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/model/PayloadDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/model/SystemUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/model/SystemUserVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/model/UPMSToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/processor/LoginProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/processor/usernamepassword/SysUsernamePasswordToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/processor/usernamepassword/UsernamePasswordProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/processor/usernamepassword/UsernamePasswordProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/properties/CustomSecurityProperties.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/properties/UserTypeConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/provider/DaoMultiAuthenticationProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/serializers/SimpleGrantedAuthorityDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/service/MultiAuthenticationUserDetailsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/utils/JWTUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-security/src/main/java/com/zigaai/utils/SecurityUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/common-core">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/common-security">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="chok-common" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="chok-common" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="chok-common" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="publishing" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2bJOrqKMAku8h45OvsX3wDwOxEA" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build chok-common.executor": "Run",
+    "Gradle.chok-common [build].executor": "Run",
+    "Gradle.chok-common [clean].executor": "Run",
+    "Gradle.chok-common [publishAppPublicationToMavenLocal].executor": "Run",
+    "Gradle.chok-common [publishJarPublicationToMavenLocal].executor": "Run",
+    "Gradle.chok-common [publishToMavenLocal].executor": "Run",
+    "Gradle.chok-common:common-core [publishJarPublicationToMavenLocal].executor": "Run",
+    "Gradle.chok-common:common-core [publishMyAppPublicationToMavenLocal].executor": "Run",
+    "Gradle.chok-common:common-core [publishToMavenLocal].executor": "Run",
+    "Gradle.chok-common:common-security [publishToMavenLocal].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "jdk.selected.JAVA_MODULE": "21",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/code/java/chok-common/common-core/src/main/java/com/zigaai",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "editor.preferences.import",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\code\java\chok-common\common-core\src\main\java\com\zigaai" />
+      <recent name="D:\code\java\chok-common\common-security\src\main\java\com\zigaai" />
+      <recent name="D:\code\java\chok-common\common-security\src\main\java\com\zigaai\service" />
+      <recent name="D:\code\java\chok-common\common-core\src\main\java\com\zigaai\model" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.zigaai.provider" />
+      <recent name="com.zigaai.filter" />
+      <recent name="com.zigaai.model.common" />
+      <recent name="com.zigaai.enumeration" />
+      <recent name="com.zigaai.model" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.chok-common [publishJarPublicationToMavenLocal]">
+    <configuration name="chok-common [publishJarPublicationToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publishJarPublicationToMavenLocal" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="chok-common [publishToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publishToMavenLocal" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="chok-common:common-core [publishJarPublicationToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/common-core" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publishJarPublicationToMavenLocal" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="chok-common:common-core [publishMyAppPublicationToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/common-core" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publishMyAppPublicationToMavenLocal" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="chok-common:common-security [publishToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/common-security" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publishToMavenLocal" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.chok-common [publishJarPublicationToMavenLocal]" />
+        <item itemvalue="Gradle.chok-common:common-core [publishJarPublicationToMavenLocal]" />
+        <item itemvalue="Gradle.chok-common [publishToMavenLocal]" />
+        <item itemvalue="Gradle.chok-common:common-core [publishMyAppPublicationToMavenLocal]" />
+        <item itemvalue="Gradle.chok-common:common-security [publishToMavenLocal]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-3bb87179ee21-JavaScript-IU-241.9959.31" />
+        <option value="jdk-21.0.1-openjdk-21.0.1-5b172459f563-8f8caaaa" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="75c667ed-7e4f-4910-afab-def004677e68" name="Changes" comment="" />
+      <created>1705929917361</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1705929917361</updated>
+      <workItem from="1705929918422" duration="3453000" />
+      <workItem from="1705933539159" duration="4300000" />
+      <workItem from="1706798721271" duration="3934000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

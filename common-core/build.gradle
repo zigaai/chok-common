@@ -1,0 +1,16 @@
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.hibernate.validator:hibernate-validator'
+    implementation 'jakarta.servlet:jakarta.servlet-api'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation "org.mapstruct:mapstruct:${mapstruct_version}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
+
+    compileOnly 'org.springframework:spring-context'
+    compileOnly 'org.springframework:spring-web'
+    compileOnly 'org.springframework.security:spring-security-core'
+}

@@ -1,0 +1,22 @@
+dependencies {
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.nimbusds:nimbus-jose-jwt'
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.springframework.security:spring-security-web'
+    implementation project(":common-core")
+    implementation('org.springframework.boot:spring-boot') {
+        exclude group: '*', module: '*'
+    }
+    implementation('org.springframework.data:spring-data-redis') {
+        exclude group: '*', module: '*'
+    }
+
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    implementation "org.mapstruct:mapstruct:${mapstruct_version}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
+}
