@@ -1,0 +1,11 @@
+dependencies {
+    implementation 'org.slf4j:slf4j-api'
+
+    implementation "org.mapstruct:mapstruct:${mapstruct_version}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
+
+    implementation('com.baomidou:mybatis-plus-core') {
+        exclude group: 'com.github.jsqlparser', module: '*'
+        exclude group: 'com.baomidou', module: 'mybatis-plus-annotation'
+    }
+}

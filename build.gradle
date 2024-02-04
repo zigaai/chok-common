@@ -4,11 +4,8 @@ buildscript {
         project_version = '0.0.1'
         mapstruct_version = '1.5.5.Final'
         springboot_version = '3.2.0'
-        mysql_version = '8.0.33'
-        mybatis_plus_version = '3.5.4.1'
-        mybatis_spring_boot_version = '3.0.3'
+        mybatis_plus_version = '3.5.5'
         nimbus_jose_jwt_version = '9.37'
-        guava_version = '32.1.2-jre'
     }
 }
 
@@ -50,6 +47,7 @@ subprojects {
 
         dependencies {
             dependency "com.nimbusds:nimbus-jose-jwt:${nimbus_jose_jwt_version}"
+            dependency "com.baomidou:mybatis-plus-core:${mybatis_plus_version}"
         }
     }
 
