@@ -18,6 +18,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.HeaderWriterFilter;
 
 @RequiredArgsConstructor
 // @Configuration
@@ -91,9 +92,8 @@ public class BaseResourceServerConfig {
                         .accessDeniedHandler(defaultAccessDeniedHandler)
                 );
 
-        // LoginAuthenticationFilter loginAuthenticationFilter = buildLoginFilter(authenticationManager);
-        // http.addFilterAfter(loginAuthenticationFilter, HeaderWriterFilter.class)
-        //         .addFilterBefore(jwtFilter, LoginAuthenticationFilter.class);
+        LoginAuthenticationFilter loginAuthenticationFilter = buildLoginFilter(authenticationManager);
+        http.addFilterAfter(loginAuthenticationFilter, HeaderWriterFilter.class);
 
         return http.build();
     }

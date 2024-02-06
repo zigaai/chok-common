@@ -1,16 +1,16 @@
 package com.zigaai.security.filter;
 
 import com.nimbusds.jose.JOSEException;
-import com.zigaai.security.model.LoginDTO;
-import com.zigaai.security.converter.SystemUserConvertor;
-import com.zigaai.security.enumeration.LoginType;
 import com.zigaai.enumeration.ResponseState;
 import com.zigaai.exception.LoginException;
 import com.zigaai.exception.LoginIllegalArgumentException;
-import com.zigaai.model.security.PayloadDTO;
-import com.zigaai.security.model.SystemUser;
-import com.zigaai.model.security.UPMSToken;
 import com.zigaai.model.common.ResponseData;
+import com.zigaai.model.security.PayloadDTO;
+import com.zigaai.model.security.UPMSToken;
+import com.zigaai.security.converter.SystemUserConvertor;
+import com.zigaai.security.enumeration.LoginType;
+import com.zigaai.security.model.LoginDTO;
+import com.zigaai.security.model.SystemUser;
 import com.zigaai.security.processor.LoginProcessor;
 import com.zigaai.security.properties.CustomSecurityProperties;
 import com.zigaai.security.service.TokenCacheService;
@@ -21,7 +21,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -38,6 +37,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 @Slf4j
 public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -79,10 +80,14 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
         PayloadDTO payload = SystemUserConvertor.INSTANCE.toPayloadDTO(systemUser, securityProperties.getToken().getTimeToLive(), securityProperties.getToken().getRefreshTimeToLive());
         UPMSToken upmsToken;
         try {
-            upmsToken = JWTUtil.generateToken(payload, systemUser.getSalt());
+            upmsToken = JWTUtil.generateToken(payload, securityProperties.getKeyPairs());
         } catch (JOSEException e) {
             log.error("生成token错误: ", e);
             jackson2HttpMessageConverter.write(ResponseData.unknownError("生成token错误"), MediaType.APPLICATION_JSON, new ServletServerHttpResponse(response));
+            return;
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            log.error("加密token错误: ", e);
+            jackson2HttpMessageConverter.write(ResponseData.unknownError("加密token错误"), MediaType.APPLICATION_JSON, new ServletServerHttpResponse(response));
             return;
         }
         tokenCacheService.cacheRefreshToken(upmsToken, payload);

@@ -24,6 +24,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 
 @Slf4j
@@ -50,9 +52,13 @@ public class JwtFilter extends OncePerRequestFilter {
             Pair<JWSObject, PayloadDTO> pair = JWTUtil.parseUnverified(token);
             PayloadDTO payload = pair.getRight();
             systemUser = (SystemUser) userDetailsServiceStrategy.getStrategy(payload.getUserType()).loadUserByUsername(payload.getUsername());
-            JWTUtil.check(pair.getLeft(), payload, systemUser.getSalt());
+            JWTUtil.check(pair.getLeft(), payload, securityProperties.getKeyPairs());
         } catch (ParseException | JOSEException | JwtExpiredException e) {
             log.info("解析token失败: ", e);
+            chain.doFilter(request, response);
+            return;
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            log.info("解密token失败: ", e);
             chain.doFilter(request, response);
             return;
         }
