@@ -49,7 +49,10 @@ public final class SecurityUtil {
     }
 
     public static String getTokenVal(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = request.getHeader(SecurityConstant.PRE_AUTHORIZATION_HEADER);
+        if (StringUtils.isBlank(token)) {
+            token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        }
         String prefix = SecurityConstant.TOKEN_PREFIX;
         if (StringUtils.isBlank(token) || !token.startsWith(prefix)) {
             return null;

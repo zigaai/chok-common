@@ -55,4 +55,10 @@ public class PayloadDTO implements Serializable {
      */
     @JsonIgnore
     private Long refreshExpiresIn;
+
+    private String aud;
+
+    private String kid;
+
+    private String sub;
 }

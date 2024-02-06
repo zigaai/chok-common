@@ -1,0 +1,16 @@
+dependencies {
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'commons-codec:commons-codec'
+    implementation 'jakarta.servlet:jakarta.servlet-api'
+    implementation 'org.springframework.security:spring-security-oauth2-authorization-server'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation('org.springframework.data:spring-data-redis') {
+        exclude group: '*', module: '*'
+    }
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation project(":common-core")
+    implementation project(":common-security")
+}

@@ -3,7 +3,7 @@ buildscript {
         project_group = 'com.zigaai'
         project_version = '0.0.1'
         mapstruct_version = '1.5.5.Final'
-        springboot_version = '3.2.0'
+        springboot_version = '3.2.2'
         mybatis_plus_version = '3.5.5'
         nimbus_jose_jwt_version = '9.37'
     }

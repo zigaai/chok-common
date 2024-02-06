@@ -17,8 +17,12 @@ public interface SystemUserConvertor {
 
     SystemUserConvertor INSTANCE = Mappers.getMapper(SystemUserConvertor.class);
 
+    @Mapping(target = "sub", ignore = true)
+    @Mapping(target = "kid", ignore = true)
+    @Mapping(target = "aud", source = "systemUser.username")
     @Mapping(target = "iat", ignore = true)
-    @Mapping(target = "exp", ignore = true)
+    @Mapping(target = "exp", source = "expiresIn")
+    @Mapping(target = "expiresIn", source = "expiresIn")
     PayloadDTO toPayloadDTO(SystemUser systemUser, Long expiresIn, Long refreshExpiresIn);
 
     SystemUserVO toVO(SystemUser systemUser);

@@ -55,7 +55,11 @@ public final class JWTUtil {
         JWSObject jwsObject = JWSObject.parse(token);
         // 创建HMAC验证器
         String payloadStr = jwsObject.getPayload().toString();
-        return Pair.of(jwsObject, JsonUtil.readValue(payloadStr, PayloadDTO.class));
+        PayloadDTO payloadDTO = JsonUtil.readValue(payloadStr, PayloadDTO.class);
+        if (payloadDTO.getUsername() == null) {
+            payloadDTO.setUsername(payloadDTO.getSub());
+        }
+        return Pair.of(jwsObject, payloadDTO);
     }
 
     // public static PayloadDTO parseVerified(String token, String salt) throws ParseException, JsonProcessingException, JOSEException {
