@@ -8,7 +8,7 @@ dependencies {
     implementation ('org.springframework.security:spring-security-oauth2-resource-server'){
         exclude group: '*', module: '*'
     }
-//    implementation 'org.springframework.security:spring-security-oauth2-jose'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation project(":common-core")
     implementation('org.springframework.boot:spring-boot') {
         exclude group: '*', module: '*'

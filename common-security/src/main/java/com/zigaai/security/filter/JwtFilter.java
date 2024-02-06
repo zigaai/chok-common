@@ -3,9 +3,9 @@ package com.zigaai.security.filter;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSObject;
 import com.zigaai.exception.JwtExpiredException;
-import com.zigaai.security.properties.CustomSecurityProperties;
 import com.zigaai.model.security.PayloadDTO;
 import com.zigaai.security.model.SystemUser;
+import com.zigaai.security.properties.CustomSecurityProperties;
 import com.zigaai.security.service.MultiAuthenticationUserDetailsService;
 import com.zigaai.security.utils.JWTUtil;
 import com.zigaai.security.utils.SecurityUtil;
@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -51,6 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             Pair<JWSObject, PayloadDTO> pair = JWTUtil.parseUnverified(token);
             PayloadDTO payload = pair.getRight();
+            // TODO 接口化
             systemUser = (SystemUser) userDetailsServiceStrategy.getStrategy(payload.getUserType()).loadUserByUsername(payload.getUsername());
             JWTUtil.check(pair.getLeft(), payload, securityProperties.getKeyPairs());
         } catch (ParseException | JOSEException | JwtExpiredException e) {
@@ -62,7 +64,8 @@ public class JwtFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (SecurityContextHolder.getContext().getAuthentication() == null
+                || SecurityContextHolder.getContext().getAuthentication() instanceof JwtAuthenticationToken) {
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(systemUser, null, systemUser.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
