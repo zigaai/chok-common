@@ -7,6 +7,7 @@ import com.zigaai.model.security.AuthenticationModel;
 import com.zigaai.security.converter.SystemUserConvertor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
@@ -71,6 +72,24 @@ public class SystemUser implements UserDetails, Serializable {
      * 权限
      */
     private final Collection<? extends GrantedAuthority> authorities;
+
+    /**
+     * 授权客户端ID
+     */
+    @Setter
+    private String clientId;
+
+    /**
+     * JWT接收对象
+     */
+    @Setter
+    private Collection<String> aud;
+
+    /**
+     * 授权客户端scope
+     */
+    @Setter
+    private Collection<String> scope;
 
     public static SystemUser of(AuthenticationModel admin, List<? extends AuthRole> roleList, List<? extends AuthMenu> menuList) {
         return SystemUserConvertor.INSTANCE.from(admin, roleList, menuList);

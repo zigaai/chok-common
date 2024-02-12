@@ -57,4 +57,19 @@ public class SystemUserVO implements Serializable {
      */
     @JsonDeserialize(using = SimpleGrantedAuthorityDeserializer.class)
     private Collection<? extends GrantedAuthority> authorities;
+
+    /**
+     * 授权客户端ID
+     */
+    private String clientId;
+
+    /**
+     * JWT接收对象
+     */
+    private Collection<String> aud;
+
+    /**
+     * 授权客户端scope
+     */
+    private Collection<String> scope;
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.zigaai.serializers.*;
 import lombok.experimental.UtilityClass;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,10 +43,12 @@ public final class JsonUtil {
             dateModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
             dateModule.addSerializer(LocalDate.class, new LocalDateSerializer());
             dateModule.addSerializer(LocalTime.class, new LocalTimeSerializer());
+            dateModule.addSerializer(Instant.class, new InstantSerializer());
             // 配置反序列化
             dateModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
             dateModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
             dateModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer());
+            dateModule.addDeserializer(Instant.class, new InstantDeserializer());
             DEFAULT_OBJECT_MAPPER.registerModule(dateModule);
             // 允许属性名称没有引号
             DEFAULT_OBJECT_MAPPER.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);

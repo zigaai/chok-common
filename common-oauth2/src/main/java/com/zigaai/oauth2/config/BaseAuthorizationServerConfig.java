@@ -54,8 +54,6 @@ public class BaseAuthorizationServerConfig {
 
     protected final RedisOAuth2AuthorizationConsentService redisOAuth2AuthorizationConsentService;
 
-    // @Bean
-    // @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
             throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
@@ -95,7 +93,8 @@ public class BaseAuthorizationServerConfig {
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable);
+                .formLogin(AbstractHttpConfigurer::disable)
+                .anonymous(AbstractHttpConfigurer::disable);
         http.addFilterAfter(jwtFilter, SecurityContextHolderFilter.class);
         return http.build();
     }
@@ -118,9 +117,5 @@ public class BaseAuthorizationServerConfig {
         oAuth2AuthorizationConsentAuthenticationProvider.setAuthorizationCodeGenerator(uuidoAuth2AuthorizationCodeGenerator);
         return Arrays.asList(oAuth2AuthorizationCodeRequestAuthenticationProvider, oAuth2AuthorizationConsentAuthenticationProvider);
     }
-
-    // private OAuth2AutoRefreshTokenAuthenticationConverter buildOAuth2AutoRefreshTokenAuthenticationConverter() {
-    //     return new OAuth2AutoRefreshTokenAuthenticationConverter(redisTemplate, jwtDecoder, registeredClientRepository);
-    // }
 
 }

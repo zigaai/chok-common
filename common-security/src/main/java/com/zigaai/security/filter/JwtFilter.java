@@ -19,15 +19,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
+import java.util.HashSet;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -65,7 +70,24 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
         if (SecurityContextHolder.getContext().getAuthentication() == null
-                || SecurityContextHolder.getContext().getAuthentication() instanceof JwtAuthenticationToken) {
+                || SecurityContextHolder.getContext().getAuthentication() instanceof JwtAuthenticationToken
+        ) {
+            Authentication jwtAuthentication = SecurityContextHolder.getContext().getAuthentication();
+            if (jwtAuthentication != null) {
+                Jwt jwt = (Jwt) jwtAuthentication.getPrincipal();
+                String clientId = jwt.getClaimAsString("clientId");
+                if (clientId != null) {
+                    systemUser.setClientId(clientId);
+                }
+                List<String> audList = jwt.getClaimAsStringList("aud");
+                if (!CollectionUtils.isEmpty(audList)) {
+                    systemUser.setAud(new HashSet<>(audList));
+                }
+                List<String> scopeList = jwt.getClaimAsStringList("scope");
+                if (!CollectionUtils.isEmpty(scopeList)) {
+                    systemUser.setScope(new HashSet<>(scopeList));
+                }
+            }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(systemUser, null, systemUser.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
