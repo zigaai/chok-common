@@ -3,8 +3,7 @@ package com.zigaai.security.provider;
 import com.zigaai.security.model.SystemUser;
 import com.zigaai.security.processor.usernamepassword.SysUsernamePasswordToken;
 import com.zigaai.security.properties.CustomSecurityProperties;
-import com.zigaai.security.service.MultiAuthenticationUserDetailsService;
-import com.zigaai.strategy.StrategyFactory;
+import com.zigaai.security.service.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -43,7 +42,7 @@ public class DaoMultiAuthenticationProvider extends AbstractUserDetailsAuthentic
      */
     private volatile String userNotFoundEncodedPassword;
 
-    private final StrategyFactory<String, MultiAuthenticationUserDetailsService> userDetailsServiceStrategy;
+    private final AuthenticationService authenticationService;
 
     private final CustomSecurityProperties customSecurityProperties;
 
@@ -51,9 +50,9 @@ public class DaoMultiAuthenticationProvider extends AbstractUserDetailsAuthentic
 
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
-    public DaoMultiAuthenticationProvider(StrategyFactory<String, MultiAuthenticationUserDetailsService> userDetailsServiceStrategy,
+    public DaoMultiAuthenticationProvider(AuthenticationService authenticationService,
                                           CustomSecurityProperties customSecurityProperties) {
-        this(new BCryptPasswordEncoder(), userDetailsServiceStrategy, customSecurityProperties);
+        this(new BCryptPasswordEncoder(), authenticationService, customSecurityProperties);
     }
 
     /**
@@ -62,10 +61,10 @@ public class DaoMultiAuthenticationProvider extends AbstractUserDetailsAuthentic
      * @since 6.0.3
      */
     public DaoMultiAuthenticationProvider(PasswordEncoder passwordEncoder,
-                                          StrategyFactory<String, MultiAuthenticationUserDetailsService> userDetailsServiceStrategy,
+                                          AuthenticationService authenticationService,
                                           CustomSecurityProperties customSecurityProperties) {
         setPasswordEncoder(passwordEncoder);
-        this.userDetailsServiceStrategy = userDetailsServiceStrategy;
+        this.authenticationService = authenticationService;
         this.customSecurityProperties = customSecurityProperties;
     }
 
@@ -88,7 +87,7 @@ public class DaoMultiAuthenticationProvider extends AbstractUserDetailsAuthentic
 
     @Override
     protected void doAfterPropertiesSet() {
-        Assert.notNull(this.userDetailsServiceStrategy, "A UserDetailsService must be set");
+        Assert.notNull(this.authenticationService, "A UserDetailsService must be set");
     }
 
     @Override
@@ -98,7 +97,7 @@ public class DaoMultiAuthenticationProvider extends AbstractUserDetailsAuthentic
         CustomSecurityProperties.Context userType = ((SysUsernamePasswordToken)authentication).getUserType();
         // SysUserType userType = ((SysUsernamePasswordToken)authentication).getUserType();
         try {
-            UserDetails loadedUser = userDetailsServiceStrategy.getStrategy(userType.getCode()).loadUserByUsername(username);
+            UserDetails loadedUser = authenticationService.loadUserByUsername(userType.getCode(), username);
             if (loadedUser == null) {
                 throw new InternalAuthenticationServiceException(
                         "UserDetailsService returned null, which is an interface contract violation");

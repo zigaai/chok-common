@@ -47,9 +47,6 @@ public class PayloadDTO implements Serializable {
     @JsonIgnore
     private Long expiresIn;
 
-    // @JsonIgnore
-    // private String salt;
-
     /**
      * refresh token 持续时间
      */

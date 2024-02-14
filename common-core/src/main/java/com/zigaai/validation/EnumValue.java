@@ -1,5 +1,6 @@
 package com.zigaai.validation;
 
+import com.zigaai.exception.BizIllegalArgumentException;
 import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -23,6 +24,7 @@ public @interface EnumValue {
 
     Class<? extends Payload>[] payload() default {};
 
+    @SuppressWarnings("squid:S1452")
     Class<? extends Enum<?>> enumClass();
 
     String enumMethod() default "contains";
@@ -51,14 +53,14 @@ public @interface EnumValue {
             try {
                 Method method = enumClass.getDeclaredMethod(enumMethod, valueClass);
                 if (!Boolean.TYPE.equals(method.getReturnType()) && !Boolean.class.equals(method.getReturnType())) {
-                    throw new RuntimeException(enumMethod + "method return is not boolean type in the " + enumClass + " class");
+                    throw new BizIllegalArgumentException(enumMethod + "method return is not boolean type in the " + enumClass + " class");
                 }
                 Boolean result = (Boolean) method.invoke(null, value);
                 return result != null && result;
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                throw new RuntimeException(e);
+                throw new BizIllegalArgumentException("非法的枚举值");
             } catch (SecurityException | NoSuchMethodException e) {
-                throw new RuntimeException("This " + enumMethod + "(" + valueClass + ") method does not exist in the " + enumClass, e);
+                throw new BizIllegalArgumentException("This " + enumMethod + "(" + valueClass + ") method does not exist in the " + enumClass);
             }
         }
     }

@@ -86,7 +86,7 @@ public class BaseAuthorizationServerConfig {
                         .authenticationEntryPoint(oauth2AuthenticationEntryPoint)
                 )
                 // Accept access tokens for User Info and/or Client Registration
-                .oauth2ResourceServer((resourceServer) -> resourceServer
+                .oauth2ResourceServer(resourceServer -> resourceServer
                         .jwt(Customizer.withDefaults())
                         .accessDeniedHandler(defaultAccessDeniedHandler)
                         .authenticationEntryPoint(defaultAuthenticationEntryPoint)

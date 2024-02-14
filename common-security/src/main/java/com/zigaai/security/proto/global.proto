@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package com.zigaai.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.zigaai.grpc.lib";
+
+message GrpcString {
+  string val = 1;
+}
+
+message GrpcInt {
+  int32 val = 1;
+}
+
+message GrpcBool {
+  bool val = 1;
+}

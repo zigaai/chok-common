@@ -64,15 +64,6 @@ public final class JWTUtil {
         return Pair.of(jwsObject, payloadDTO);
     }
 
-    // public static PayloadDTO parseVerified(String token, String salt) throws ParseException, JsonProcessingException, JOSEException {
-    //     Pair<JWSObject, PayloadDTO> pair = parseUnverified(token);
-    //     JWSObject jwsObject = pair.getLeft();
-    //     PayloadDTO payload = pair.getRight();
-    //     payload.setSalt(salt);
-    //     check(jwsObject, payload);
-    //     return payload;
-    // }
-
     public static void check(JWSObject jwsObject, PayloadDTO payload, KeyPair keyPairs) throws JOSEException {
         JWSVerifier jwsVerifier = new RSASSAVerifier((RSAPublicKey) keyPairs.getPublic());
         if (!jwsObject.verify(jwsVerifier)) {
@@ -81,10 +72,6 @@ public final class JWTUtil {
         if (TimeUnit.SECONDS.toMillis(payload.getExp()) < new Date().getTime()) {
             throw new JwtExpiredException("token已过期, 请重新登录");
         }
-    }
-
-    private static String generateSecret(Long userId, String salt) {
-        return userId + salt;
     }
 
 }

@@ -12,7 +12,7 @@ import java.util.Collection;
 @EqualsAndHashCode(callSuper = true)
 public class SysUsernamePasswordToken extends UsernamePasswordAuthenticationToken {
 
-    private final CustomSecurityProperties.Context userType;
+    private final transient CustomSecurityProperties.Context userType;
 
     private SysUsernamePasswordToken(Object username, Object password, CustomSecurityProperties.Context userType) {
         super(username, password);

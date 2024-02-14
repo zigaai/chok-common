@@ -1,6 +1,10 @@
 package com.zigaai.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zigaai.grpc.lib.AuthMenuReply;
+import com.zigaai.grpc.lib.AuthRoleReply;
+import com.zigaai.grpc.lib.SimpleGrantedAuthorityReply;
+import com.zigaai.grpc.lib.SystemUserReply;
 import com.zigaai.model.security.AuthMenu;
 import com.zigaai.model.security.AuthRole;
 import com.zigaai.model.security.AuthenticationModel;
@@ -11,11 +15,15 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -93,6 +101,49 @@ public class SystemUser implements UserDetails, Serializable {
 
     public static SystemUser of(AuthenticationModel admin, List<? extends AuthRole> roleList, List<? extends AuthMenu> menuList) {
         return SystemUserConvertor.INSTANCE.from(admin, roleList, menuList);
+    }
+
+    public static SystemUser of(SystemUserReply rpcUser) {
+        List<AuthRoleReply> roleList = rpcUser.getRoleListList();
+        List<AuthRole> authRoleList = Collections.emptyList();
+        if (!CollectionUtils.isEmpty(roleList)) {
+            authRoleList = new ArrayList<>(roleList.size());
+            for (AuthRoleReply item : roleList) {
+                AuthRole role = new AuthRole();
+                role.setRoleCode(item.getRoleCode());
+                authRoleList.add(role);
+            }
+        }
+        List<AuthMenuReply> menuList = rpcUser.getMenuListList();
+        List<AuthMenu> authMenuList = Collections.emptyList();
+        if (!CollectionUtils.isEmpty(menuList)) {
+            authMenuList = new ArrayList<>(roleList.size());
+            for (AuthMenuReply item : menuList) {
+                AuthMenu menu = new AuthMenu();
+                menu.setName(item.getName());
+                authMenuList.add(menu);
+            }
+        }
+        List<SimpleGrantedAuthorityReply> authorities = rpcUser.getAuthoritiesList();
+        List<SimpleGrantedAuthority> simpleAuthorities = Collections.emptyList();
+        if (!CollectionUtils.isEmpty(authorities)) {
+            simpleAuthorities = new ArrayList<>(authorities.size());
+            for (SimpleGrantedAuthorityReply item : authorities) {
+                simpleAuthorities.add(new SimpleGrantedAuthority(item.getRole()));
+            }
+        }
+        return new SystemUser(rpcUser.getId(),
+                rpcUser.getUsername(),
+                rpcUser.getPassword(),
+                rpcUser.getSalt(),
+                rpcUser.getIsDeleted(),
+                rpcUser.getUserType(),
+                authRoleList,
+                authMenuList,
+                simpleAuthorities,
+                null,
+                null,
+                null);
     }
 
     /**

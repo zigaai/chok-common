@@ -15,7 +15,7 @@ import com.zigaai.oauth2.keygen.UUIDOAuth2RefreshTokenGenerator;
 import com.zigaai.oauth2.service.JwtSaltValidator;
 import com.zigaai.security.model.SystemUser;
 import com.zigaai.security.properties.CustomSecurityProperties;
-import com.zigaai.service.Oauth2AuthenticationService;
+import com.zigaai.security.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -28,9 +28,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.token.*;
 
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -42,7 +40,7 @@ public class BaseTokenConfig {
 
     protected final CustomSecurityProperties securityProperties;
 
-    private final Oauth2AuthenticationService oauth2AuthenticationService;
+    private final AuthenticationService authenticationService;
 
     public OAuth2TokenGenerator<OAuth2Token> tokenGenerator(JwtEncoder jwtEncoder,
                                                             OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer) {
@@ -91,11 +89,11 @@ public class BaseTokenConfig {
         });
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(Arrays.asList(new JwtTimestampValidator(Duration.of(0, ChronoUnit.SECONDS)),
-                new JwtSaltValidator(oauth2AuthenticationService))));
+                new JwtSaltValidator(authenticationService))));
         return decoder;
     }
 
-    public JWKSource<SecurityContext> jwkSource() throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public JWKSource<SecurityContext> jwkSource() {
         KeyPair keyPairs = securityProperties.getKeyPairs();
         RSAKey rsaKey = new RSAKey.Builder((RSAPublicKey) keyPairs.getPublic())
                 .privateKey(keyPairs.getPrivate())

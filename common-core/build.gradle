@@ -3,6 +3,11 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.hibernate.validator:hibernate-validator'
     implementation 'jakarta.servlet:jakarta.servlet-api'
+    implementation 'org.springframework.security:spring-security-core'
+    implementation 'io.grpc:grpc-api'
+    implementation ("net.devh:grpc-server-spring-boot-autoconfigure:${grpc_springboot_version}"){
+        exclude group: '*', module: '*'
+    }
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -12,5 +17,4 @@ dependencies {
 
     compileOnly 'org.springframework:spring-context'
     compileOnly 'org.springframework:spring-web'
-    compileOnly 'org.springframework.security:spring-security-core'
 }

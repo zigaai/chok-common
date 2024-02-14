@@ -33,8 +33,8 @@ public class OAuth2AuthorizationErrorHandler implements AuthenticationFailureHan
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.warn("OAuth2 认证错误", exception);
         response.setStatus(HttpStatus.BAD_REQUEST.value());
-        if (exception instanceof OAuth2AuthenticationException) {
-            OAuth2Error oAuth2Error = ((OAuth2AuthenticationException) exception).getError();
+        if (exception instanceof OAuth2AuthenticationException e) {
+            OAuth2Error oAuth2Error = e.getError();
             String msg = StringUtils.hasText(oAuth2Error.getDescription()) ? String.format("%s: %s", oAuth2Error.getDescription(), oAuth2Error.getErrorCode()) : oAuth2Error.getErrorCode();
             jackson2HttpMessageConverter.write(ResponseData.badRequest(msg), MediaType.APPLICATION_JSON, new ServletServerHttpResponse(response));
             return;

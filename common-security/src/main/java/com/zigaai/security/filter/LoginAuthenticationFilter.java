@@ -37,8 +37,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
 @Slf4j
 public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
@@ -68,7 +66,7 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         LoginDTO params = (LoginDTO) jackson2HttpMessageConverter.read(LoginDTO.class, new ServletServerHttpRequest(request));
-        // TODO tenant 租户
+        // TODO tenant 租户 //NOSONAR
         LoginType loginType = LoginType.getByVal(params.getLoginType());
         Authentication unauthenticated = loginTypeLoginProcessorStrategy.getStrategy(loginType).buildUnauthenticated(params);
         return this.getAuthenticationManager().authenticate(unauthenticated);
@@ -84,10 +82,6 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
         } catch (JOSEException e) {
             log.error("生成token错误: ", e);
             jackson2HttpMessageConverter.write(ResponseData.unknownError("生成token错误"), MediaType.APPLICATION_JSON, new ServletServerHttpResponse(response));
-            return;
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            log.error("加密token错误: ", e);
-            jackson2HttpMessageConverter.write(ResponseData.unknownError("加密token错误"), MediaType.APPLICATION_JSON, new ServletServerHttpResponse(response));
             return;
         }
         tokenCacheService.cacheRefreshToken(upmsToken, payload);

@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package com.zigaai.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.zigaai.grpc.lib";
+
+import "com/zigaai/security/proto/global.proto";
+
+message AuthInfoRequest {
+  string userType = 1;
+  string username = 2;
+}
+
+message SystemUserReply {
+  int64 id = 1;
+  string username = 2;
+  string password = 3;
+  string salt = 4;
+  bool isDeleted = 5;
+  string userType = 6;
+  repeated AuthRoleReply roleList = 7;
+  repeated AuthMenuReply menuList = 8;
+  repeated SimpleGrantedAuthorityReply authorities = 9;
+  string clientId = 10;
+  repeated string aud = 11;
+  repeated string scope = 12;
+}
+
+message AuthRoleReply {
+  string roleCode = 1;
+}
+
+message AuthMenuReply {
+  string name = 1;
+}
+
+message SimpleGrantedAuthorityReply {
+  string role = 1;
+}
+
+service AuthService {
+  rpc getSalt (AuthInfoRequest) returns (GrpcString);
+  rpc loadUserByUsername (AuthInfoRequest) returns (SystemUserReply);
+}

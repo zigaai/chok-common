@@ -34,53 +34,17 @@ public final class RedisOAuth2AuthorizationService implements OAuth2Authorizatio
         if (registeredClient == null) {
             throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.INVALID_CLIENT), "client id:" + authorization.getRegisteredClientId() + " is not exist");
         }
-
+        
+        long authorizationCodeTimeToLive = registeredClient.getTokenSettings().getAuthorizationCodeTimeToLive().toSeconds();
         long refreshTokenTimeToLive = registeredClient.getTokenSettings().getRefreshTokenTimeToLive().toSeconds();
         long accessTokenTimeToLive = registeredClient.getTokenSettings().getAccessTokenTimeToLive().toSeconds();
 
-        OAuth2Authorization.Token<OAuth2AuthorizationCode> authorizationCode = authorization.getToken(OAuth2AuthorizationCode.class);
-        if (authorizationCode != null) {
-            long authorizationCodeTimeToLive = registeredClient.getTokenSettings().getAuthorizationCodeTimeToLive().toSeconds();
-            if (authorizationCode.getToken() == null) {
-                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "authorization code can not be null");
-            }
-            redisTemplate.opsForValue().set(OAuth2RedisKeys.AUTHORIZATION_CODE(authorizationCode.getToken().getTokenValue()), authorization.getId(), authorizationCodeTimeToLive, TimeUnit.SECONDS);
-        }
+        this.cacheAuthorizationCode(authorization, authorizationCodeTimeToLive);
+        this.cacheAccessToken(authorization, accessTokenTimeToLive);
+        this.cacheRefreshToken(authorization, refreshTokenTimeToLive);
+        this.cacheOidcIdToken(authorization, accessTokenTimeToLive);
+        this.cacheAuthorizationState(authorization, refreshTokenTimeToLive);
 
-        OAuth2Authorization.Token<OAuth2AccessToken> accessToken = authorization.getAccessToken();
-        if (accessToken != null) {
-            if (accessToken.getToken() == null) {
-                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "access token can not be null");
-            }
-            redisTemplate.opsForValue().set(OAuth2RedisKeys.ACCESS_TOKEN(accessToken.getToken().getTokenValue()), authorization.getId(), accessTokenTimeToLive, TimeUnit.SECONDS);
-        }
-
-        OAuth2Authorization.Token<OAuth2RefreshToken> refreshToken = authorization.getRefreshToken();
-        if (refreshToken != null) {
-            if (refreshToken.getToken() == null) {
-                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "refresh token can not be null");
-            }
-            if (refreshToken.getToken().getExpiresAt() == null) {
-                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "refresh token expires_at can not be null");
-            }
-            redisTemplate.opsForValue().set(OAuth2RedisKeys.REFRESH_TOKEN(refreshToken.getToken().getTokenValue()), authorization.getId(), refreshTokenTimeToLive, TimeUnit.SECONDS);
-        }
-
-        OAuth2Authorization.Token<OidcIdToken> oidcIdToken = authorization.getToken(OidcIdToken.class);
-        if (oidcIdToken != null) {
-            if (oidcIdToken.getToken() == null) {
-                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "oidc token can not be null");
-            }
-            if (oidcIdToken.getToken().getExpiresAt() == null) {
-                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "oidc token expires_at can not be null");
-            }
-            redisTemplate.opsForValue().set(OAuth2RedisKeys.OIDC_TOKEN(oidcIdToken.getToken().getTokenValue()), authorization.getId(), accessTokenTimeToLive, TimeUnit.SECONDS);
-        }
-
-        String authorizationState = authorization.getAttribute(OAuth2ParameterNames.STATE);
-        if (StringUtils.hasText(authorizationState)) {
-            redisTemplate.opsForValue().set(OAuth2RedisKeys.OAUTH2_STATE_CODE(authorizationState), authorization.getId(), refreshTokenTimeToLive, TimeUnit.SECONDS);
-        }
         redisTemplate.opsForValue().set(OAuth2RedisKeys.RESOURCE_PRINCIPAL(authorization.getPrincipalName(), authorization.getId()), authorization.getRegisteredClientId(), refreshTokenTimeToLive, TimeUnit.SECONDS);
         redisTemplate.opsForValue().set(OAuth2RedisKeys.OAUTH2_AUTHORIZATION(authorization.getId()), authorization, refreshTokenTimeToLive, TimeUnit.SECONDS);
     }
@@ -145,5 +109,58 @@ public final class RedisOAuth2AuthorizationService implements OAuth2Authorizatio
             return null;
         }
         return (OAuth2Authorization) redisTemplate.opsForValue().get(OAuth2RedisKeys.OAUTH2_AUTHORIZATION(key));
+    }
+
+    private void cacheAuthorizationCode(OAuth2Authorization authorization, long authorizationCodeTimeToLive) {
+        OAuth2Authorization.Token<OAuth2AuthorizationCode> authorizationCode = authorization.getToken(OAuth2AuthorizationCode.class);
+        if (authorizationCode != null) {
+            if (authorizationCode.getToken() == null) {
+                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "authorization code can not be null");
+            }
+            redisTemplate.opsForValue().set(OAuth2RedisKeys.AUTHORIZATION_CODE(authorizationCode.getToken().getTokenValue()), authorization.getId(), authorizationCodeTimeToLive, TimeUnit.SECONDS);
+        }
+    }
+
+    private void cacheAccessToken(OAuth2Authorization authorization, long accessTokenTimeToLive) {
+        OAuth2Authorization.Token<OAuth2AccessToken> accessToken = authorization.getAccessToken();
+        if (accessToken != null) {
+            if (accessToken.getToken() == null) {
+                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "access token can not be null");
+            }
+            redisTemplate.opsForValue().set(OAuth2RedisKeys.ACCESS_TOKEN(accessToken.getToken().getTokenValue()), authorization.getId(), accessTokenTimeToLive, TimeUnit.SECONDS);
+        }
+    }
+
+    private void cacheRefreshToken(OAuth2Authorization authorization, long refreshTokenTimeToLive) {
+        OAuth2Authorization.Token<OAuth2RefreshToken> refreshToken = authorization.getRefreshToken();
+        if (refreshToken != null) {
+            if (refreshToken.getToken() == null) {
+                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "refresh token can not be null");
+            }
+            if (refreshToken.getToken().getExpiresAt() == null) {
+                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "refresh token expires_at can not be null");
+            }
+            redisTemplate.opsForValue().set(OAuth2RedisKeys.REFRESH_TOKEN(refreshToken.getToken().getTokenValue()), authorization.getId(), refreshTokenTimeToLive, TimeUnit.SECONDS);
+        }
+    }
+
+    private void cacheOidcIdToken(OAuth2Authorization authorization, long accessTokenTimeToLive) {
+        OAuth2Authorization.Token<OidcIdToken> oidcIdToken = authorization.getToken(OidcIdToken.class);
+        if (oidcIdToken != null) {
+            if (oidcIdToken.getToken() == null) {
+                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "oidc token can not be null");
+            }
+            if (oidcIdToken.getToken().getExpiresAt() == null) {
+                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR), "oidc token expires_at can not be null");
+            }
+            redisTemplate.opsForValue().set(OAuth2RedisKeys.OIDC_TOKEN(oidcIdToken.getToken().getTokenValue()), authorization.getId(), accessTokenTimeToLive, TimeUnit.SECONDS);
+        }
+    }
+
+    private void cacheAuthorizationState(OAuth2Authorization authorization, long refreshTokenTimeToLive) {
+        String authorizationState = authorization.getAttribute(OAuth2ParameterNames.STATE);
+        if (StringUtils.hasText(authorizationState)) {
+            redisTemplate.opsForValue().set(OAuth2RedisKeys.OAUTH2_STATE_CODE(authorizationState), authorization.getId(), refreshTokenTimeToLive, TimeUnit.SECONDS);
+        }
     }
 }

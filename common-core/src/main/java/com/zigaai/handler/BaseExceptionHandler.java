@@ -2,12 +2,13 @@ package com.zigaai.handler;
 
 import com.zigaai.exception.*;
 import com.zigaai.model.common.ResponseData;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -79,7 +80,7 @@ public class BaseExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseData<Void> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
         if (log.isDebugEnabled()) {
-            log.debug(e.getMessage());
+            log.debug(e.getLocalizedMessage());
         }
         return ResponseData.badRequest(e.getParameterName() + ": 为必填值", null);
     }
@@ -90,7 +91,7 @@ public class BaseExceptionHandler {
         if (log.isDebugEnabled()) {
             log.debug("请求参数错误: ", e);
         }
-        return ResponseData.fail(e.getMessage());
+        return ResponseData.fail(e.getLocalizedMessage());
     }
 
     @ExceptionHandler(value = {
@@ -105,9 +106,21 @@ public class BaseExceptionHandler {
             log.debug("认证错误: ", e);
         }
         if (e instanceof RefreshTokenExpiredException) {
-            return ResponseData.needLogin(e.getMessage());
+            return ResponseData.needLogin(e.getLocalizedMessage());
         }
-        return ResponseData.unauthorized(e.getMessage());
+        return ResponseData.unauthorized(e.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(value = StatusRuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseData<Void> handleRpcException(StatusRuntimeException e) {
+        if (Status.UNKNOWN.getCode().equals(e.getStatus().getCode())
+                || Status.INVALID_ARGUMENT.getCode().equals(e.getStatus().getCode())) {
+            log.info("rpc服务调用失败: ", e);
+            return ResponseData.unknownError(e.getStatus().getDescription());
+        }
+        log.error("rpc服务调用失败: ", e);
+        return ResponseData.unknownError("rpc服务调用失败(" + e.getLocalizedMessage() + "), 请联系管理员处理");
     }
 
     @ExceptionHandler(value = Exception.class)
@@ -123,7 +136,7 @@ public class BaseExceptionHandler {
         if (log.isDebugEnabled()) {
             log.debug("业务异常: ", e);
         }
-        return ResponseData.fail(e.getMessage());
+        return ResponseData.fail(e.getLocalizedMessage());
     }
 
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)

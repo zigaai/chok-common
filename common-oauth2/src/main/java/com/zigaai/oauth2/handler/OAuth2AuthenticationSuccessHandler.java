@@ -1,12 +1,10 @@
 package com.zigaai.oauth2.handler;
 
 import com.zigaai.model.common.ResponseData;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
@@ -30,12 +28,10 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     private final MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
 
-    private final RedisTemplate<String, Object> redisTemplate;
-
     private final Converter<OAuth2AccessTokenResponse, Map<String, Object>> accessTokenResponseParametersConverter = new DefaultOAuth2AccessTokenResponseMapConverter();
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         OAuth2AccessTokenAuthenticationToken accessTokenAuthentication =
                 (OAuth2AccessTokenAuthenticationToken) authentication;
 
@@ -52,11 +48,6 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         }
         if (refreshToken != null) {
             builder.refreshToken(refreshToken.getTokenValue());
-            // if (accessToken.getExpiresAt() != null) {
-                // long duration = accessToken.getExpiresAt().toEpochMilli() - System.currentTimeMillis() + 1000;
-                // String key = OAuth2RedisKeys.REL_ACCESS_TOKEN_REFRESH_TOKEN.apply(accessToken.getTokenValue());
-                // redisTemplate.opsForValue().set(key, refreshToken.getTokenValue(), duration, TimeUnit.MILLISECONDS);
-            // }
         }
         if (!CollectionUtils.isEmpty(additionalParameters)) {
             builder.additionalParameters(additionalParameters);

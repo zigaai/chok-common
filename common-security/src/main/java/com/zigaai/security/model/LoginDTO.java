@@ -52,8 +52,8 @@ public class LoginDTO implements Serializable {
         if (StringUtils.isBlank(this.userType)) {
             throw new LoginIllegalArgumentException("请选择用户类型");
         }
-        CustomSecurityProperties.Context userType = securityProperties.getUserType(this.userType);
-        if (userType == null) {
+        CustomSecurityProperties.Context userTypeCtx = securityProperties.getUserType(this.userType);
+        if (userTypeCtx == null) {
             throw new LoginIllegalArgumentException("非法的用户类型");
         }
     }

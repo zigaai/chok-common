@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Getter
@@ -63,7 +64,7 @@ public class TokenCacheService {
     }
 
     @SuppressWarnings("unchecked")
-    public HashSet<String> getRefreshTokens(String userType, String username) {
+    public Set<String> getRefreshTokens(String userType, String username) {
         String userRefreshTokenKey = SecurityConstant.CacheKey.USER_REFRESH_TOKEN(userType, username);
         return (HashSet<String>) redisTemplate.opsForValue().get(userRefreshTokenKey);
     }

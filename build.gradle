@@ -5,7 +5,12 @@ buildscript {
         mapstruct_version = '1.5.5.Final'
         springboot_version = '3.2.2'
         mybatis_plus_version = '3.5.5'
-        nimbus_jose_jwt_version = '9.37'
+        nimbus_jose_jwt_version = '9.37.3'
+        protobuf_version = '3.25.2'
+        protobuf_plugin_version = '0.9.4'
+        grpc_version = '1.58.1'
+        grpc_springboot_version = '2.15.0.RELEASE'
+        hutool_version = '5.8.26'
     }
 }
 
@@ -46,8 +51,10 @@ subprojects {
         }
 
         dependencies {
-            dependency "com.nimbusds:nimbus-jose-jwt:${nimbus_jose_jwt_version}"
+//             dependency "com.nimbusds:nimbus-jose-jwt:${nimbus_jose_jwt_version}"
             dependency "com.baomidou:mybatis-plus-core:${mybatis_plus_version}"
+            dependency "io.grpc:grpc-api:${grpc_version}"
+            dependency "net.devh:grpc-server-spring-boot-autoconfigure:${grpc_springboot_version}"
         }
     }
 

@@ -11,14 +11,20 @@ public final class SecurityConstant {
 
     public static final class CacheKey {
 
+        private CacheKey() {
+        }
+
+        @SuppressWarnings("squid:S100")
         public static String REFRESH_TOKEN_INFO(String refreshToken) {
             return "refresh_token_info:" + refreshToken;
         }
 
+        @SuppressWarnings("squid:S100")
         public static String USER_REFRESH_TOKEN(String userType, String username) {
             return userType.toLowerCase() + ":refresh_token:" + username;
         }
 
+        @SuppressWarnings("squid:S100")
         public static String USER_SALT(String userType, String username) {
             return userType.toLowerCase() + ":salt:" + username;
         }
@@ -26,6 +32,9 @@ public final class SecurityConstant {
     }
 
     public static final class TokenKey {
+
+        private TokenKey() {
+        }
 
         public static final String ID = "id";
 
