@@ -19,12 +19,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationProvider;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationConsentAuthenticationProvider;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
@@ -56,7 +56,17 @@ public class BaseAuthorizationServerConfig {
 
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
             throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        // OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http); //NOSONAR
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
+        RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
+        http.securityMatcher(endpointsMatcher)
+                .authorizeHttpRequests(config -> config.requestMatchers(ignoreUrls())
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .with(authorizationServerConfigurer, config -> {
+                });
 
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults())    // Enable OpenID Connect 1.0
@@ -71,14 +81,13 @@ public class BaseAuthorizationServerConfig {
                         // .consentPage("https://cn.bing.com")
                 )
                 .tokenEndpoint(tokenEndpoint -> tokenEndpoint
-                        .errorResponseHandler(oauth2AuthorizationErrorHandler)
-                        .accessTokenResponseHandler(oAuth2AuthenticationSuccessHandler)
+                                .errorResponseHandler(oauth2AuthorizationErrorHandler)
+                                .accessTokenResponseHandler(oAuth2AuthenticationSuccessHandler)
                         // .accessTokenRequestConverters(converters -> converters.add(0, buildOAuth2AutoRefreshTokenAuthenticationConverter()))
                 );
-        http
-                // Redirect to the login page when not authenticated from the
-                // authorization endpoint
-                .exceptionHandling(exceptions -> exceptions
+        // Redirect to the login page when not authenticated from the
+        // authorization endpoint
+        http.exceptionHandling(exceptions -> exceptions
                         .defaultAuthenticationEntryPointFor(
                                 new LoginUrlAuthenticationEntryPoint("/login"),
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
@@ -91,10 +100,9 @@ public class BaseAuthorizationServerConfig {
                         .accessDeniedHandler(defaultAccessDeniedHandler)
                         .authenticationEntryPoint(defaultAuthenticationEntryPoint)
                 )
+                .anonymous(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .logout(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .anonymous(AbstractHttpConfigurer::disable);
+                .formLogin(AbstractHttpConfigurer::disable);
         http.addFilterAfter(jwtFilter, SecurityContextHolderFilter.class);
         return http.build();
     }
@@ -116,6 +124,10 @@ public class BaseAuthorizationServerConfig {
                 );
         oAuth2AuthorizationConsentAuthenticationProvider.setAuthorizationCodeGenerator(uuidoAuth2AuthorizationCodeGenerator);
         return Arrays.asList(oAuth2AuthorizationCodeRequestAuthenticationProvider, oAuth2AuthorizationConsentAuthenticationProvider);
+    }
+
+    protected String[] ignoreUrls() {
+        return new String[0];
     }
 
 }

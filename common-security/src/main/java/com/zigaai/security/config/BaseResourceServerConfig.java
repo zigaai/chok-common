@@ -15,20 +15,16 @@ public abstract class BaseResourceServerConfig {
 
     protected final DefaultAuthenticationEntryPoint defaultAuthenticationEntryPoint;
 
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        String[] ignoreUrls = ignoreUrls();
+    public SecurityFilterChain resourceSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .sessionManagement(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(config -> {
-                            if (ignoreUrls != null && ignoreUrls.length > 0) {
-                                config.requestMatchers(ignoreUrls)
-                                        .permitAll();
-                            }
-                            config.anyRequest()
-                                    .authenticated();
-                        }
+                .anonymous(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(config -> config.requestMatchers(ignoreUrls())
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .exceptionHandling(config -> config
                         .authenticationEntryPoint(defaultAuthenticationEntryPoint)
@@ -42,7 +38,8 @@ public abstract class BaseResourceServerConfig {
         return http.build();
     }
 
-    protected void postProcessAfterInitialization(HttpSecurity http) {}
+    protected void postProcessAfterInitialization(HttpSecurity http) {
+    }
 
     protected String[] ignoreUrls() {
         return new String[0];

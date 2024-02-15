@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Set;
 
@@ -109,6 +110,12 @@ public class BaseExceptionHandler {
             return ResponseData.needLogin(e.getLocalizedMessage());
         }
         return ResponseData.unauthorized(e.getLocalizedMessage());
+    }
+
+    @ExceptionHandler({NoResourceFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseData<Void> handleNoResourceFoundException(NoResourceFoundException e) {
+        return ResponseData.notFound("Not Found");
     }
 
     @ExceptionHandler(value = StatusRuntimeException.class)

@@ -1,6 +1,5 @@
 package com.zigaai.strategy;
 
-import com.zigaai.exception.BizIllegalArgumentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -29,10 +28,6 @@ public class StrategyFactory<K, S extends Strategy<K>> implements ApplicationCon
     }
 
     public S getStrategy(K key) {
-        S strategy = strategyMap.get(key);
-        if (strategy == null) {
-            throw new BizIllegalArgumentException(key + ": 不支持此类型处理");
-        }
-        return strategy;
+        return strategyMap.get(key);
     }
 }

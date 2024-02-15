@@ -64,11 +64,15 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         LoginDTO params = (LoginDTO) jackson2HttpMessageConverter.read(LoginDTO.class, new ServletServerHttpRequest(request));
         // TODO tenant 租户 //NOSONAR
         LoginType loginType = LoginType.getByVal(params.getLoginType());
-        Authentication unauthenticated = loginTypeLoginProcessorStrategy.getStrategy(loginType).buildUnauthenticated(params);
+        LoginProcessor processor = loginTypeLoginProcessorStrategy.getStrategy(loginType);
+        if (processor == null) {
+            throw new LoginIllegalArgumentException("不支持此登录类型登录");
+        }
+        Authentication unauthenticated = processor.buildUnauthenticated(params);
         return this.getAuthenticationManager().authenticate(unauthenticated);
     }
 

@@ -21,8 +21,8 @@ public final class OAuth2RedisKeys {
     }
 
     @SuppressWarnings("squid:S100")
-    public static String RESOURCE_PRINCIPAL(String principalName, String authorizationId) {
-        return OAUTH2_PREFIX + "principal:" + principalName + ":" + authorizationId;
+    public static String RESOURCE_PRINCIPAL(String userType, String username, String authorizationId) {
+        return OAUTH2_PREFIX + "principal:" + userType + ":" + username + ":" + authorizationId;
     }
 
     @SuppressWarnings("squid:S100")
@@ -55,4 +55,13 @@ public final class OAuth2RedisKeys {
         return OAUTH2_PREFIX + "client_id:" + key;
     }
 
+    @SuppressWarnings("squid:S100")
+    public static String USER_OAUTH2_AUTHORIZATION_ID(String userType, String username) {
+        return userType.toLowerCase() + ":oauth2:authorization_ids:" + username;
+    }
+
+    @SuppressWarnings("squid:S100")
+    public static String USER_OAUTH2_ACCESS_TOKEN(String userType, String username) {
+        return userType.toLowerCase() + ":oauth2:access_tokens:" + username;
+    }
 }
