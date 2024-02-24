@@ -100,7 +100,7 @@ public class SystemUser implements UserDetails, Serializable {
     private Collection<String> scope;
 
     public static SystemUser of(AuthenticationModel admin, List<? extends AuthRole> roleList, List<? extends AuthMenu> menuList) {
-        return SystemUserConvertor.INSTANCE.from(admin, roleList, menuList);
+        return SystemUserConvertor.INSTANCE.of(admin, roleList, menuList);
     }
 
     public static SystemUser of(SystemUserReply rpcUser) {
