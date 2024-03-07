@@ -8,7 +8,7 @@ dependencies {
         exclude group: '*', module: '*'
     }
     implementation 'io.grpc:grpc-api'
-    implementation ("net.devh:grpc-server-spring-boot-autoconfigure:${grpc_springboot_version}"){
+    implementation ("net.devh:grpc-server-spring-boot-starter:${grpc_springboot_version}"){
         exclude group: '*', module: '*'
     }
 
