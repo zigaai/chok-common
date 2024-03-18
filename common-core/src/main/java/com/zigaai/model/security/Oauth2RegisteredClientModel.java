@@ -1,7 +1,6 @@
 package com.zigaai.model.security;
 
 import java.util.Date;
-import java.util.Map;
 
 public interface Oauth2RegisteredClientModel {
 
@@ -25,9 +24,9 @@ public interface Oauth2RegisteredClientModel {
 
     Date getClientSecretExpiresAt();
 
-    Map<String, Object> parseClientSettings();
+    String getClientSettings();
 
-    Map<String, Object> parseTokenSettings();
+    String getTokenSettings();
 
     String getPostLogoutRedirectUris();
 
