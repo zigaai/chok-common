@@ -113,42 +113,8 @@ public class DaoRegisteredClientRepository implements RegisteredClientRepository
 
     @SuppressWarnings("unchecked")
     protected Map<String, Object> parseClientSettings(Oauth2RegisteredClientModel registeredClient) {
-        String tokenSettings = registeredClient.getTokenSettings();
         Map<String, Object> map = Collections.emptyMap();
-        if (StringUtils.hasText(tokenSettings)) {
-            try {
-                map = JsonUtil.readValue(tokenSettings, Map.class);
-            } catch (JsonProcessingException e) {
-                log.error("解析客户端tokenSettings字段错误, 将使用默认配置; err: {}", ExceptionUtils.getStackTrace(e));
-            }
-            Object authorizationCodeTimeToLiveObj = map.get(ConfigurationSettingNames.Token.AUTHORIZATION_CODE_TIME_TO_LIVE);
-            if (authorizationCodeTimeToLiveObj != null) {
-                map.put(ConfigurationSettingNames.Token.AUTHORIZATION_CODE_TIME_TO_LIVE, Duration.ofSeconds(Long.parseLong(authorizationCodeTimeToLiveObj.toString())));
-            }
-            Object accessTokenTimeToLiveObj = map.get(ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE);
-            if (accessTokenTimeToLiveObj != null) {
-                map.put(ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE, Duration.ofSeconds(Long.parseLong(accessTokenTimeToLiveObj.toString())));
-            }
-            Object deviceCodeTimeToLiveObj = map.get(ConfigurationSettingNames.Token.DEVICE_CODE_TIME_TO_LIVE);
-            if (deviceCodeTimeToLiveObj != null) {
-                map.put(ConfigurationSettingNames.Token.DEVICE_CODE_TIME_TO_LIVE, Duration.ofSeconds(Long.parseLong(deviceCodeTimeToLiveObj.toString())));
-            }
-            Object refreshTokenTimeToLiveObj = map.get(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE);
-            if (refreshTokenTimeToLiveObj != null) {
-                map.put(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE, Duration.ofSeconds(Long.parseLong(refreshTokenTimeToLiveObj.toString())));
-            }
-            Object idTokenSignatureAlgorithmObj = map.get(ConfigurationSettingNames.Token.ID_TOKEN_SIGNATURE_ALGORITHM);
-            if (idTokenSignatureAlgorithmObj != null) {
-                map.put(ConfigurationSettingNames.Token.ID_TOKEN_SIGNATURE_ALGORITHM, SignatureAlgorithm.from(idTokenSignatureAlgorithmObj.toString()));
-            }
-        }
-        return map;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected Map<String, Object> parseTokenSettings(Oauth2RegisteredClientModel registeredClient) {
         String clientSettings = registeredClient.getClientSettings();
-        Map<String, Object> map = Collections.emptyMap();
         if (StringUtils.hasText(clientSettings)) {
             try {
                 map = JsonUtil.readValue(clientSettings, Map.class);
@@ -174,6 +140,40 @@ public class DaoRegisteredClientRepository implements RegisteredClientRepository
             Object accessTokenFormatObj = map.get(ConfigurationSettingNames.Token.ACCESS_TOKEN_FORMAT);
             if (accessTokenFormatObj != null) {
                 map.put(ConfigurationSettingNames.Token.ACCESS_TOKEN_FORMAT, new OAuth2TokenFormat(accessTokenFormatObj.toString()));
+            }
+        }
+        return map;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected Map<String, Object> parseTokenSettings(Oauth2RegisteredClientModel registeredClient) {
+        Map<String, Object> map = Collections.emptyMap();
+        String tokenSettings = registeredClient.getTokenSettings();
+        if (StringUtils.hasText(tokenSettings)) {
+            try {
+                map = JsonUtil.readValue(tokenSettings, Map.class);
+            } catch (JsonProcessingException e) {
+                log.error("解析客户端tokenSettings字段错误, 将使用默认配置; err: {}", ExceptionUtils.getStackTrace(e));
+            }
+            Object authorizationCodeTimeToLiveObj = map.get(ConfigurationSettingNames.Token.AUTHORIZATION_CODE_TIME_TO_LIVE);
+            if (authorizationCodeTimeToLiveObj != null) {
+                map.put(ConfigurationSettingNames.Token.AUTHORIZATION_CODE_TIME_TO_LIVE, Duration.ofSeconds(Long.parseLong(authorizationCodeTimeToLiveObj.toString())));
+            }
+            Object accessTokenTimeToLiveObj = map.get(ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE);
+            if (accessTokenTimeToLiveObj != null) {
+                map.put(ConfigurationSettingNames.Token.ACCESS_TOKEN_TIME_TO_LIVE, Duration.ofSeconds(Long.parseLong(accessTokenTimeToLiveObj.toString())));
+            }
+            Object deviceCodeTimeToLiveObj = map.get(ConfigurationSettingNames.Token.DEVICE_CODE_TIME_TO_LIVE);
+            if (deviceCodeTimeToLiveObj != null) {
+                map.put(ConfigurationSettingNames.Token.DEVICE_CODE_TIME_TO_LIVE, Duration.ofSeconds(Long.parseLong(deviceCodeTimeToLiveObj.toString())));
+            }
+            Object refreshTokenTimeToLiveObj = map.get(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE);
+            if (refreshTokenTimeToLiveObj != null) {
+                map.put(ConfigurationSettingNames.Token.REFRESH_TOKEN_TIME_TO_LIVE, Duration.ofSeconds(Long.parseLong(refreshTokenTimeToLiveObj.toString())));
+            }
+            Object idTokenSignatureAlgorithmObj = map.get(ConfigurationSettingNames.Token.ID_TOKEN_SIGNATURE_ALGORITHM);
+            if (idTokenSignatureAlgorithmObj != null) {
+                map.put(ConfigurationSettingNames.Token.ID_TOKEN_SIGNATURE_ALGORITHM, SignatureAlgorithm.from(idTokenSignatureAlgorithmObj.toString()));
             }
         }
         return map;
