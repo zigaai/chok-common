@@ -9,6 +9,7 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -110,6 +111,12 @@ public class BaseExceptionHandler {
             return ResponseData.needLogin(e.getLocalizedMessage());
         }
         return ResponseData.unauthorized(e.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseData<Void> handleAccessDeniedException(AccessDeniedException e) {
+        return ResponseData.forbidden("当前用户无权访问");
     }
 
     @ExceptionHandler({NoResourceFoundException.class})

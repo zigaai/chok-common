@@ -62,6 +62,10 @@ public class ResponseData<T> implements Serializable {
         return build(ResponseState.FAILED.getValue(), message, data);
     }
 
+    public static <T> ResponseData<T> forbidden(String msg) {
+        return forbidden(msg, null);
+    }
+
     public static <T> ResponseData<T> forbidden(T data) {
         return forbidden(ResponseState.FORBIDDEN.getMsg(), data);
     }
