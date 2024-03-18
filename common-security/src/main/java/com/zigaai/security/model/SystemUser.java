@@ -59,7 +59,7 @@ public class SystemUser implements UserDetails, Serializable {
     /**
      * 状态: 0: 正常, 1: 删除
      */
-    private final Boolean isDeleted;
+    private final Boolean deleted;
 
     /**
      * 用户类型
@@ -136,7 +136,7 @@ public class SystemUser implements UserDetails, Serializable {
                 rpcUser.getUsername(),
                 rpcUser.getPassword(),
                 rpcUser.getSalt(),
-                rpcUser.getIsDeleted(),
+                rpcUser.getDeleted(),
                 rpcUser.getUserType(),
                 authRoleList,
                 authMenuList,
@@ -172,6 +172,6 @@ public class SystemUser implements UserDetails, Serializable {
 
     @Override
     public boolean isEnabled() {
-        return this.isDeleted != null && !this.isDeleted;
+        return this.deleted != null && !this.deleted;
     }
 }

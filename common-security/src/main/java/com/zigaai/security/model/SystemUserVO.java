@@ -35,7 +35,7 @@ public class SystemUserVO implements Serializable {
     /**
      * 状态: 0: 正常, 1: 删除
      */
-    private Boolean isDeleted;
+    private Boolean deleted;
 
     /**
      * 用户类型

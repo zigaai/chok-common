@@ -35,5 +35,5 @@ public class AuthAdmin implements Serializable {
     /**
      * 状态: 	0: 正常 	1: 删除
      */
-    private Boolean isDeleted;
+    private Boolean deleted;
 }

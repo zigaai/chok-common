@@ -17,7 +17,7 @@ message SystemUserReply {
   string username = 2;
   string password = 3;
   string salt = 4;
-  bool isDeleted = 5;
+  bool deleted = 5;
   string userType = 6;
   repeated AuthRoleReply roleList = 7;
   repeated AuthMenuReply menuList = 8;
