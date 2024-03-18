@@ -6,6 +6,4 @@ public interface Oauth2RegisteredClientMapper {
 
     Oauth2RegisteredClientModel getByClientId(String clientId);
 
-    String getClientIdById(String id);
-
 }

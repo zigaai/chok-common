@@ -4,8 +4,6 @@ import java.util.Date;
 
 public interface Oauth2RegisteredClientModel {
 
-    Long getId();
-
     String getClientId();
 
     String getClientSecret();

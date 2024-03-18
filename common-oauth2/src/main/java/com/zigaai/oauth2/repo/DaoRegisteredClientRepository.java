@@ -38,16 +38,7 @@ public class DaoRegisteredClientRepository implements RegisteredClientRepository
     }
 
     @Override
-    public RegisteredClient findById(String id) {
-        String key = OAuth2RedisKeys.OAUTH2_REGISTERED_CLIENT_ID(id);
-        String clientId = (String) redisTemplate.opsForValue().get(key);
-        if (!StringUtils.hasText(clientId)) {
-            clientId = oauth2RegisteredClientMapper.getClientIdById(id);
-            if (!StringUtils.hasText(clientId)) {
-                return null;
-            }
-        }
-        redisTemplate.opsForValue().set(key, clientId);
+    public RegisteredClient findById(String clientId) {
         return findByClientId(clientId);
     }
 
@@ -62,7 +53,7 @@ public class DaoRegisteredClientRepository implements RegisteredClientRepository
         if (registeredClient == null) {
             return null;
         }
-        RegisteredClient.Builder builder = RegisteredClient.withId(registeredClient.getId().toString())
+        RegisteredClient.Builder builder = RegisteredClient.withId(registeredClient.getClientId())
                 .clientId(registeredClient.getClientId())
                 .clientIdIssuedAt(registeredClient.getClientIdIssuedAt().toInstant())
                 .clientName(registeredClient.getClientName())
